@@ -1,0 +1,21 @@
+{{ form_start(localForm) }}
+{{ form_row(localForm.street) }}
+<div class="d-flex">
+    <div class="w-100 pr-2">
+        {{ form_row(localForm.postalCode) }}
+    </div>
+    <div class="w-100 pl-2">
+        {{ form_row(localForm.city) }}
+    </div>
+</div>
+{{ form_row(localForm.date) }}
+
+
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert {{ type }} mt-4">{{ message }}</div>
+    {% endfor %}
+{% endfor %}
+
+<button type="submit" class="btn btn-primary">Sauvegarder</button>
+{{ form_end(localForm) }}

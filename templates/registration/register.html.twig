@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div id="content">
+    <div class="container-fluid d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    Créer son compte
+                </div>
+                <div class="card-body">
+                    {% for flashError in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                    {% endfor %}
+
+
+                    {{ form_start(registrationForm) }}
+                        {{ form_row(registrationForm.email) }}
+                        {{ form_row(registrationForm.plainPassword) }}
+                        {{ form_row(registrationForm.firstName) }}
+                        {{ form_row(registrationForm.lastName) }}
+
+
+
+                    <button type="submit" class="btn btn-primary">Register</button>
+                    {{ form_end(registrationForm) }}
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex w-100 justify-content-center align-items-center">
+                        <div class="w-100 d-flex justify-content-center align-items-center border-right">
+                            <a href="{{ path('app_login') }}">Connection</a>
+                        </div>
+                        <div class="w-100 d-flex justify-content-center align-items-center">
+                            <a href="{{ path('app_register') }}">Mot de passe oublié</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

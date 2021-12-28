@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.firstname }} {{ app.user.lastname }}</span>
+                            <img class="img-profile rounded-circle" src="{{ asset('img/undraw_profile.svg') }}">
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert {{ type }} mt-4">{{ message }}</div>
+                    {% endfor %}
+                {% endfor %}
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Liste de vos locaux</h1>
+                    <a class="btn btn-primary btn-sm" href="{{ path('app_local_new') }}">Ajouter un local</a>
+                </div>
+
+                <div class="container d-flex flex-column">
+                    {% for local in locals %}
+                        <div class="card card-body mb-4 d-flex flex-row justify-content-center align-items-center">
+                            <div class="w-100 border-right">
+                                <div class="d-flex flex-row">
+                                    <div class="w-100"><span class="font-weight-bold">Ville :</span> {{ local.city }}</div>
+                                    <div class="w-100"><span class="font-weight-bold">Code postal :</span> {{ local.postalCode }}</div>
+                                </div>
+                                <div><span class="font-weight-bold">Rue :</span> {{ local.street }}</div>
+                            </div>
+                            <div class="w-100 d-flex flex-row">
+                                <div class="w-100 text-center">
+                                    <p class="mb-1"><span class="font-weight-bold">Locataires</span></p>
+                                    <p>{{ local.tenants | length }}</p>
+                                </div>
+                                <div class="w-100 text-center">
+                                    {% if local.date %}
+                                        <p class="mb-1"><span class="font-weight-bold">Date</span></p>
+                                        <p>{{ local.date | date("d-m-Y") }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="w-100 d-flex justify-content-center align-items-center">
+                                    <a class="btn btn-sm btn-primary pl-3 pr-3" href="{{ path('app_local_show', {'id': local.id}) }}">Voir</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

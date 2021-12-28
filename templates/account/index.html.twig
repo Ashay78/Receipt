@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div id="content">
+    <div class="container-fluid d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    Modifier votre compte
+                </div>
+                <div class="card-body">
+                    {% for flashError in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                    {% endfor %}
+
+
+                    {{ form_start(formUpdateUser) }}
+                    {{ form_row(formUpdateUser.firstname) }}
+                    {{ form_row(formUpdateUser.lastname) }}
+                    {{ form_row(formUpdateUser.street) }}
+                    <div class="d-flex">
+                        <div class="w-100 pr-2">
+                            {{ form_row(formUpdateUser.postalCode) }}
+                        </div>
+                        <div class="w-100 pl-2">
+                            {{ form_row(formUpdateUser.city) }}
+                        </div>
+                    </div>
+
+                    {% for type, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert {{ type }} mt-4">{{ message }}</div>
+                        {% endfor %}
+                    {% endfor %}
+
+
+                    <button type="submit" class="btn btn-primary">Modifier</button>
+                    {{ form_end(formUpdateUser) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

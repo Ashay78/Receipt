@@ -1,0 +1,72 @@
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ path('app_home') }}">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Quittance <sup>GC</sup></div>
+    </a>
+
+    {% if app.user %}
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_home') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            Interface admin
+        </div>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_local') }}">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Local</span></a>
+        </li>
+
+        <hr class="sidebar-divider">
+
+        <div class="sidebar-heading">
+
+        </div>
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_account') }}">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Mon compte</span></a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_logout') }}">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Déconnexion</span></a>
+        </li>
+    {% else %}
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_login') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Connexion</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_register') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Rejoindre</span></a>
+        </li>
+
+    {% endif %}
+
+
+</ul>

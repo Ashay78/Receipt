@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <ul class="navbar-nav ml-auto">
+
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ app.user.firstname }} {{ app.user.lastname }}</span>
+                            <img class="img-profile rounded-circle" src="{{ asset('img/undraw_profile.svg') }}">
+                        </a>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+                {% for type, messages in app.flashes %}
+                    {% for message in messages %}
+                        <div class="alert {{ type }} mt-4">{{ message }}</div>
+                    {% endfor %}
+                {% endfor %}
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">{{ local.street }}, {{ local.postalCode }} {{ local.city }}</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Début : {{ local.date | date('d-m-Y') }}</h1>
+                </div>
+
+                <div>
+                    <div class="d-flex">
+                        <div class="col-10">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <p class="mb-0">Liste des locataires</p>
+                                    <a class="btn btn-sm btn-primary" href="{{ path('app_local_tenant_new', {'id': local.id}) }}">Ajouter un locataires</a>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Prenom</th>
+                                            <th scope="col">Nom</th>
+                                            <th scope="col">Loyé (€)</th>
+                                            <th scope="col">Charge (€)</th>
+                                            <th scope="col">Envoyer mail</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for tenant in local.tenants %}
+                                            <tr>
+                                                <td>{{ tenant.email }}</td>
+                                                <td>{{ tenant.firstname }}</td>
+                                                <td>{{ tenant.lastname }}</td>
+                                                <td>{{ tenant.rental }}</td>
+                                                <td>{{ tenant.charge }}</td>
+                                                <td>
+                                                    {% if tenant.sendReceipt %}
+                                                        true
+                                                    {% else %}
+                                                        false
+                                                    {% endif %}
+                                                </td>
+                                                <td class="d-flex flex-column">
+                                                    <a class="btn btn-sm btn-warning mb-2" href="{{ path('app_tenant_update', {'id': tenant.id}) }}">Modifier</a>
+                                                    <a class="btn btn-sm btn-primary" href="{{ path('app_tenant_change_send_receipt', {'id': tenant.id}) }}">
+                                                        {% if tenant.sendReceipt %}
+                                                            Ne pas envoyer
+                                                        {% else %}
+                                                            Envoyer
+                                                        {% endif %}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="card-footer">
+                                    <p>Envoyer quittance : </p>
+                                    <div class="d-flex flex-row">
+                                        {% for month in months %}
+                                            {% if month[1] %}
+                                                <a class="btn btn-sm btn-primary w-100 ml-2 mr-2" href="{{ path('app_local_send_email', {'id': local.id, 'date': month[0]}) }}">{{ month[0] }}</a>
+                                            {% else %}
+                                                <a class="btn btn-sm btn-warning w-100 ml-2 mr-2" href="{{ path('app_local_send_email', {'id': local.id, 'date': month[0]}) }}">{{ month[0] }}</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="card">
+                                <div class="card-header">Admin</div>
+                                <div class="card-body">
+                                    <a class="btn btn-sm btn-warning w-100 mb-2" href="{{ path('app_local_update', {'id': local.id}) }}">Modifier</a>
+                                    <a class="btn btn-sm btn-danger w-100" href="{{ path('app_local_delete', {'id': local.id}) }}">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
