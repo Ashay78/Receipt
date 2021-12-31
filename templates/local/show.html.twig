@@ -87,18 +87,20 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="card-footer">
-                                    <p>Envoyer quittance : </p>
-                                    <div class="d-flex flex-row">
-                                        {% for month in months %}
-                                            {% if month[1] %}
-                                                <a class="btn btn-sm btn-primary w-100 ml-2 mr-2" href="{{ path('app_local_send_email', {'id': local.id, 'date': month[0]}) }}">{{ month[0] }}</a>
-                                            {% else %}
-                                                <a class="btn btn-sm btn-warning w-100 ml-2 mr-2" href="{{ path('app_local_send_email', {'id': local.id, 'date': month[0]}) }}">{{ month[0] }}</a>
-                                            {% endif %}
-                                        {% endfor %}
+                                {% if local.tenants|length > 0 %}
+                                    <div class="card-footer">
+                                        <p>Envoyer quittance : </p>
+                                        <div class="d-flex flex-row">
+                                            {% for month in months %}
+                                                {% if month[1] %}
+                                                    <a class="btn btn-sm btn-primary w-100 ml-2 mr-2" href="{{ path('app_local_date', {'local': local.id, 'date': month[0]}) }}">{{ month[0] }}</a>
+                                                {% else %}
+                                                    <a class="btn btn-sm btn-warning w-100 ml-2 mr-2" href="{{ path('app_local_date', {'local': local.id, 'date': month[0]}) }}">{{ month[0] }}</a>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                </div>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-2">

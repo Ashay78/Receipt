@@ -7,10 +7,15 @@ use App\Form\LocalType;
 use App\Repository\LocalRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mime\Email;
+
 
 #[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
 class LocalController extends AbstractController
@@ -18,7 +23,7 @@ class LocalController extends AbstractController
     #[Route('/local', name: 'app_local')]
     public function index(LocalRepository $localRepository): Response
     {
-        $locals = $localRepository->findAll();
+        $locals = $localRepository->findBy(array('owner' => $this->getUser()));
         return $this->render('local/index.html.twig', [
             'locals' => $locals,
         ]);
@@ -99,6 +104,30 @@ class LocalController extends AbstractController
         return $this->redirectToRoute('app_local');
     }
 
+    #[Route('/local/{local}/{date}', name: 'app_local_date')]
+    public function localDate(Local $local, string $date, MailerInterface $mailer): Response
+    {
+
+        foreach($local->getTenants() as $tenant) {
+            $email = (new TemplatedEmail())
+                ->from(new Address('cous.gabriel@gmail.com', 'gcousin'))
+                ->to($tenant->getEmail())
+                ->subject('Quittance')
+                ->htmlTemplate('receipt/mail.html.twig');
+
+            $context = $email->getContext();
+            $context['firstname'] = $tenant->getFirstname();
+            $context['lastname'] = $tenant->getLastname();
+            $context['date'] = $date;
+            $email->context($context);
+            $mailer->send($email);
+        }
+
+        $this->addFlash('alert-success', 'Mails envoyés');
+
+        return $this->redirectToRoute('app_local_show', ['id' => $local->getId()]);
+    }
+
     #[Route('/local/{id}/send_email/{date}', name: 'app_local_send_email')]
     public function sendReceipt(Local $local, string $date): Response
     {
@@ -106,4 +135,6 @@ class LocalController extends AbstractController
         // TODO send receipt
         return $this->redirectToRoute('app_local_show', ['id' => $local->getId()]);
     }
+
+
 }

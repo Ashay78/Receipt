@@ -51,7 +51,6 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
             $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('cous.gabriel@gmail.com', 'gcousin'))
@@ -59,7 +58,6 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             $this->addFlash('alert-success', 'Un mail vous a été envoyé !');
             return $this->redirectToRoute('app_login');
@@ -155,7 +153,7 @@ class RegistrationController extends AbstractController
             $plainPassword = $formPasswordChange->get('plainPassword')->getData();
             try {
                 $this->emailChangePassword->handleEmailChangePassword($request, $user, $plainPassword);
-                $this->addFlash('success', 'Votre mot de passe a été modifié.');
+                $this->addFlash('alert-success', 'Votre mot de passe a été modifié.');
                 return $this->redirectToRoute('app_home');
             } catch (VerifyEmailExceptionInterface $exception) {
                 $this->addFlash('alert-danger', $exception->getReason());
