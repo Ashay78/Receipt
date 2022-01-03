@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="146.59.233.253" id="870512db-f87a-46f8-a1cf-dd86ab31bee4" port="12222" customName="deploy" nameFormat="CUSTOM" username="ubuntu">
+        <option name="customName" value="deploy" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>
