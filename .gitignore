@@ -54,3 +54,5 @@
 /migrations/*
 
 .idea
+
+!.gitignore
