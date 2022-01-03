@@ -51,6 +51,6 @@
 # Embedded web-server pid file
 /.web-server-pid
 
-/migrations/
+/migrations/*
 
 .idea
