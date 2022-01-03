@@ -56,3 +56,5 @@
 .idea
 
 !.gitignore
+
+.env.dev
