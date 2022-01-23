@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Tenant;
 use App\Repository\LocalRepository;
 use App\Repository\TenantRepository;
+use Knp\Snappy\Pdf;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -40,5 +42,22 @@ class HomeController extends AbstractController
             'tenants' => $tenants,
             'price' => $price
         ]);
+    }
+
+    #[Route('/test', name: 'app_test')]
+    public function test(Request $request, Pdf $knpSnappyPdf): Response
+    {
+        return new Response(
+            $knpSnappyPdf->getOutputFromHtml($this->renderView(
+                'test.html.twig',
+                array()
+            )
+            ),
+            200,
+            array(
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename=test.pdf'
+            )
+        );
     }
 }
